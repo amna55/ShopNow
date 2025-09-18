@@ -79,9 +79,9 @@
         <div class="flex flex-col md:flex-row justify-between items-center">
             <p class="text-sm">&copy; 2025 ShopNow. All rights reserved.</p>
             <div class="space-x-4 mt-2 md:mt-0">
-            <NuxtLink to="/about" class="hover:underline text-sm">About</NuxtLink>
-            <NuxtLink to="/contact" class="hover:underline text-sm">Contact</NuxtLink>
-            <NuxtLink to="/privacy" class="hover:underline text-sm">Privacy Policy</NuxtLink>
+            <NuxtLink to="" class="hover:underline text-sm">About</NuxtLink>
+            <NuxtLink to="" class="hover:underline text-sm">Contact</NuxtLink>
+            <NuxtLink to="" class="hover:underline text-sm">Privacy Policy</NuxtLink>
             </div>
         </div>
         </footer>
