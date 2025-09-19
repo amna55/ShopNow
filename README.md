@@ -1,6 +1,26 @@
-# Nuxt Minimal Starter
+# Shopping List App
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A modern, responsive shopping list application built with **Nuxt 3** and **Tailwind CSS**.  
+The app allows users to add, categorize, and manage their shopping items in a clean and intuitive interface.  
+
+---
+
+## Features
+
+- **Add Items Easily** – Enter items at the top, auto-categorized (e.g., Fruits, Dairy, Vegetables, Snacks, etc.)
+- **Automatic Categorization** – Items are grouped under their relevant category section.
+- **Mark as Completed** – Check off items once purchased.
+- **Delete Items Quickly** – Clear selected or all items with one click.
+- **Modern UI** – Styled with Tailwind CSS for a minimal and elegant look.
+- **Responsive Design** – Works smoothly across desktop and mobile devices.
+
+---
+
+## 🛠️ Tech Stack
+
+- [Nuxt 3](https://nuxt.com/) – Vue.js framework with file-based routing and SSR support  
+- [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework  
+- [Pinia](https://pinia.vuejs.org/) 
 
 ## Setup
 
