@@ -5,7 +5,6 @@
     });
 
     import { ref, onMounted, computed } from "vue";
-    import { useRouter } from 'vue-router'
 
     // Define interfaces for your data
     interface ShoppingItem {
@@ -31,7 +30,6 @@
     }
 
     const supabase = useSupabaseClient()
-    const router = useRouter()
     const user = ref<any>(null)
     const newItem = ref("")
     const items = ref<ShoppingItem[]>([])
@@ -96,7 +94,7 @@
 
         const { data, error } = await supabase
         .from('shopping_items')
-        .insert([itemData] as never) // Use never to satisfy Supabase types
+        .insert([itemData] as never)
         .select()
 
         if (error) throw error
@@ -125,7 +123,7 @@
         const updateData = { completed: item.completed }
         const { error } = await supabase
         .from('shopping_items')
-        .update(updateData as never) // Use never to satisfy Supabase types
+        .update(updateData as never)
         .eq('id', item.id)
 
         if (error) throw error
@@ -159,9 +157,9 @@
     }
     }
 
-    // Clear all items
+    // Clear all items - no confirmation prompt
     const clearAll = async () => {
-    if (!confirm("Are you sure you want to clear the entire list?")) return;
+    if (items.value.length === 0) return;
 
     try {
         const { error } = await supabase
@@ -175,24 +173,6 @@
 
     } catch (error) {
         console.error('Error clearing items:', error)
-    }
-    }
-
-    // Logout function
-    const logout = async () => {
-    try {
-        const { error } = await supabase.auth.signOut()
-        if (error) throw error
-        
-        // Clear local state
-        items.value = []
-        userItemsHistory.value = []
-        user.value = null
-        
-        // Redirect to login
-        await router.push('/login')
-    } catch (error) {
-        console.error('Logout error:', error)
     }
     }
 
@@ -216,15 +196,9 @@
 
     <template>
     <div class="max-w-3xl mx-auto py-10 px-6">
-        <!-- Header with logout -->
+        <!-- Header -->
         <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">My Shopping List</h1>
-        <button 
-            @click="logout" 
-            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-        >
-            Logout
-        </button>
         </div>
 
         <!-- Input Section with Suggestions -->
@@ -302,21 +276,6 @@
         <div v-if="items.length === 0" class="text-center text-gray-500 mt-10 bg-white rounded-lg p-8">
         <p class="text-lg mb-4">Your shopping list is empty.</p>
         <p class="text-gray-600">Add some items to get started!</p>
-        </div>
-
-        <!-- Suggestions History -->
-        <div v-if="userItemsHistory.length > 0" class="mt-8">
-        <h2 class="text-xl font-semibold mb-3 text-gray-800">Your Frequently Added Items</h2>
-        <div class="flex flex-wrap gap-2">
-            <button
-            v-for="historyItem in userItemsHistory.slice(0, 10)"
-            :key="historyItem.name"
-            @click="newItem = historyItem.name; addItem()"
-            class="bg-gray-200 text-gray-700 px-3 py-1 rounded-lg hover:bg-gray-300 transition text-sm"
-            >
-            {{ historyItem.name }}
-            </button>
-        </div>
         </div>
     </div>
     </template>
