@@ -8,11 +8,11 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@vite-pwa/nuxt',
     '@nuxtjs/supabase'
-    
+
   ],
   supabase: {
-  redirect: false,   // disable automatic redirect
-},
+    redirect: false, // We're handling redirects manually
+  },
   googleFonts: {
     families: {
       alice: [400, 700],          // regular & bold
