@@ -103,36 +103,22 @@ const login = async () => {
 }
 
 // Google OAuth
-const loginWithGoogle = async () => {
-    errorMessage.value = ""
+// In your login function, use this redirect URL:
+    const loginWithGoogle = async () => {
     try {
         const { error } = await supabase.auth.signInWithOAuth({
-            provider: "google",
-            options: {
-                redirectTo: window.location.origin + "/dashboard"
-            }
+        provider: "google",
+        options: {
+            redirectTo: window.location.origin // This might work for basic testing
+        }
         })
         if (error) throw error
     } catch (err: any) {
-        errorMessage.value = err.message || "Error with Google login"
+        console.error('Google login error:', err)
     }
-}
+    }
 
-// Facebook OAuth (Note: You need to enable Facebook provider in Supabase first)
-const loginWithFacebook = async () => {
-    errorMessage.value = ""
-    try {
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: "facebook",
-            options: {
-                redirectTo: window.location.origin + "/dashboard"
-            }
-        })
-        if (error) throw error
-    } catch (err: any) {
-        errorMessage.value = err.message || "Error with Facebook login"
-    }
-}
+
 </script>
 
 <style scoped>
