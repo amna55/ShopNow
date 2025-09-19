@@ -1,197 +1,152 @@
-    <template>
-    <div class="flex items-center justify-center min-h-screen p-4 bg-gray-50">
-        <div
-        class="bg-white rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row overflow-hidden"
-        >
-        <!-- Signup Details Container -->
-        <div class="flex-1 p-8">
-            <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center md:text-left">
-            Create an Account
-            </h1>
+<template>
+  <div class="flex items-center justify-center min-h-screen p-4 bg-gray-50">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row overflow-hidden">
+      
+      <!-- Email Signup Form -->
+      <div class="flex-1 p-8">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center md:text-left">
+          Create an Account
+        </h1>
 
-            <form @submit.prevent="register" class="space-y-4">
-            <!-- First Name -->
-            <div>
-                <label class="block text-sm font-medium mb-1 text-gray-700">First Name</label>
-                <input
-                v-model="firstName"
-                type="text"
-                placeholder="John"
-                class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-400 focus:outline-none"
-                required
-                />
-            </div>
+        <form @submit.prevent="register" class="space-y-4">
+          <input v-model="firstName" type="text" placeholder="First Name" required class="input"/>
+          <input v-model="surname" type="text" placeholder="Surname" required class="input"/>
+          <input v-model="email" type="email" placeholder="Email" required class="input"/>
+          <select v-model="country" required class="input">
+            <option value="">Select Country</option>
+            <option>Germany</option>
+            <option>USA</option>
+            <option>UK</option>
+            <option>France</option>
+            <option>India</option>
+          </select>
+          <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Password" required class="input"/>
+          <input :type="showConfirmPassword ? 'text' : 'password'" v-model="confirmPassword" placeholder="Confirm Password" required class="input"/>
+          <button type="submit" class="btn">Register</button>
+        </form>
 
-            <!-- Surname -->
-            <div>
-                <label class="block text-sm font-medium mb-1 text-gray-700">Surname</label>
-                <input
-                v-model="surname"
-                type="text"
-                placeholder="Doe"
-                class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-400 focus:outline-none"
-                required
-                />
-            </div>
+        <p class="mt-4 text-center md:text-left">
+          Already have an account?
+          <NuxtLink to="/login" class="text-red-400 hover:underline">Login</NuxtLink>
+        </p>
+      </div>
 
-            <!-- Email -->
-            <div>
-                <label class="block text-sm font-medium mb-1 text-gray-700">Email Address</label>
-                <input
-                v-model="email"
-                type="email"
-                placeholder="example@email.com"
-                class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-400 focus:outline-none"
-                required
-                />
-            </div>
+      <!-- Google OAuth -->
+      <div class="flex-1 bg-gray-100 p-8 flex flex-col justify-center items-center">
+        <h2 class="text-xl font-bold mb-6 text-gray-800 text-center">Or Sign Up With</h2>
+        <button @click="registerWithGoogle" class="btn-google">
+          <img src="/google.svg" alt="Google" class="h-5 w-5"/>
+          Google
+        </button>
+      </div>
 
-            <!-- Country -->
-            <div>
-                <label class="block text-sm font-medium mb-1 text-gray-700">Country</label>
-                <select
-                v-model="country"
-                class="w-full border rounded px-3 py-2 focus:ring-2 text-gray-700 focus:ring-green-400 focus:outline-none"
-                required
-                >
-                <option value="">Select Country</option>
-                <option value="Germany">Germany</option>
-                <option value="USA">USA</option>
-                <option value="UK">UK</option>
-                <option value="France">France</option>
-                <option value="India">India</option>
-                </select>
-            </div>
-
-            <!-- Password -->
-            <div class="relative">
-                <label class="block text-sm font-medium mb-1 text-gray-700">Password</label>
-                <input
-                :type="showPassword ? 'text' : 'password'"
-                v-model="password"
-                placeholder="********"
-                class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-400 focus:outline-none pr-10"
-                required
-                />
-                <button
-                type="button"
-                @click="showPassword = !showPassword"
-                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >
-                <span v-if="showPassword">Hide</span>
-                <span v-else>Show</span>
-                </button>
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="relative">
-                <label class="block text-sm font-medium mb-1 text-gray-700">Confirm Password</label>
-                <input
-                :type="showConfirmPassword ? 'text' : 'password'"
-                v-model="confirmPassword"
-                placeholder="********"
-                class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-400 focus:outline-none pr-10"
-                required
-                />
-                <button
-                type="button"
-                @click="showConfirmPassword = !showConfirmPassword"
-                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >
-                <span v-if="showConfirmPassword">Hide</span>
-                <span v-else>Show</span>
-                </button>
-            </div>
-
-            <button
-                type="submit"
-                class="w-full bg-red-400 text-white py-2 rounded-lg font-medium hover:bg-red-600 transition"
-            >
-                Register
-            </button>
-            </form>
-
-            <p class="text-sm mt-4 text-gray-600 text-center md:text-left">
-            Already have an account?
-            <NuxtLink to="/login" class="text-red-400 hover:underline">Login</NuxtLink>
-            </p>
-        </div>
-
-        <!-- Google Signup Container -->
-        <div class="flex-1 bg-gray-100 p-8 flex flex-col justify-center items-center">
-            <h2 class="text-xl font-bold mb-6 text-gray-800 text-center">Or Sign Up With</h2>
-
-            <button
-            @click="registerWithGoogle"
-            class="w-full flex items-center justify-center gap-2 bg-white text-gray-700 px-4 py-2 rounded shadow hover:bg-gray-100"
-            >
-            <img src="/google.svg" alt="Google" class="h-5 w-5" />
-            Google
-            </button>
-        </div>
-        </div>
     </div>
-    </template>
+  </div>
+</template>
 
-    <script setup lang="ts">
-    import { ref } from "vue"
-    import { useSupabase } from "~/composables/useSupabase"
-    import { useRouter } from "vue-router"
+<script setup lang="ts">
+import { ref, onMounted } from "vue"
+import { useRouter } from "vue-router"
+import type { SupabaseClient } from "@supabase/supabase-js"
 
-    const supabase = useSupabase()
-    const router = useRouter()
+const firstName = ref("")
+const surname = ref("")
+const email = ref("")
+const country = ref("")
+const password = ref("")
+const confirmPassword = ref("")
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
 
-    const firstName = ref("")
-    const surname = ref("")
-    const email = ref("")
-    const country = ref("")
-    const password = ref("")
-    const confirmPassword = ref("")
+const router = useRouter()
 
-    const showPassword = ref(false)
-    const showConfirmPassword = ref(false)
+let supabase: SupabaseClient
 
-    // Email/password signup
-    const register = async () => {
-    if (password.value !== confirmPassword.value) {
-        alert("Passwords do not match!")
-        return
-    }
+onMounted(() => {
+  // Initialize Supabase only on client
+  supabase = useSupabase()
+})
 
-    try {
-        const { data, error } = await supabase.auth.signUp({
-        email: email.value,
-        password: password.value,
-        options: {
-            data: {
-            firstName: firstName.value,
-            surname: surname.value,
-            country: country.value
-            }
-        }
-        })
+// Email/password signup
+const register = async () => {
+  if (password.value !== confirmPassword.value) {
+    alert("Passwords do not match!")
+    return
+  }
 
-        if (error) throw error
+  try {
+    const { error } = await supabase.auth.signUp({
+      email: email.value,
+      password: password.value,
+      options: {
+        data: { firstName: firstName.value, surname: surname.value, country: country.value }
+      }
+    })
 
-        alert("Account created! Please check your email to confirm your account.")
-        router.push("/login")
-    } catch (err: any) {
-        alert(`Error: ${err.message}`)
-    }
-    }
+    if (error) throw error
 
-    // Google OAuth signup
-    const registerWithGoogle = async () => {
-    try {
-        const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-            redirectTo: "https://shop-now-xi.vercel.app/dashboard" // replace with your URL
-        }
-        })
-        if (error) throw error
-    } catch (err: any) {
-        alert(`Google OAuth Error: ${err.message}`)
-    }
-    }
-    </script>
+    alert("Account created! Check your email to confirm.")
+    router.push("/login")
+  } catch (err: any) {
+    alert(`Error: ${err.message}`)
+  }
+}
+
+// Google OAuth
+const registerWithGoogle = async () => {
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: "https://shop-now-xi.vercel.app/dashboard" // replace with your Vercel URL
+      }
+    })
+    if (error) throw error
+  } catch (err: any) {
+    alert(`Google OAuth Error: ${err.message}`)
+  }
+}
+</script>
+
+<style scoped>
+.input {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.input:focus {
+  border-color: #34d399;
+}
+
+.btn {
+  width: 100%;
+  background-color: #f87171;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #ef4444;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+.btn-google:hover {
+  background-color: #f3f4f6;
+}
+</style>
