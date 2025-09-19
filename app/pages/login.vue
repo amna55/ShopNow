@@ -1,6 +1,6 @@
 <template>
     <div class="flex items-center justify-center min-h-screen p-4 text-black">
-        <div class="bg-[#faa675] p-6 rounded-lg shadow-md w-full max-w-sm">
+        <div class="mb-8 bg-white/70 backdrop-blur rounded-xl shadow-lg p-4 border border-gray-100">
         <h1 class="text-xl font-bold mb-4 text-white">Enter your details</h1>
 
         <!-- Form -->
@@ -66,7 +66,7 @@
         <!-- Register link -->
         <p class="text-sm mt-3 text-white">
             Don't have an account?
-            <NuxtLink to="/register" class="text-blue-700 hover:underline font-semibold">Register</NuxtLink>
+            <NuxtLink to="/register" class="text-white hover:underline font-semibold">Register</NuxtLink>
         </p>
         </div>
     </div>

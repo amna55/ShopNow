@@ -37,7 +37,9 @@
 
     // Get current user
     const getUser = async () => {
-    const { data: { user: userData } } = await supabase.auth.getUser();
+    const {
+        data: { user: userData }
+    } = await supabase.auth.getUser();
     user.value = userData;
     };
 
@@ -52,7 +54,7 @@
 
     if (!error && data) {
         const typedData = data as unknown as SupabaseShoppingItem[];
-        items.value = typedData.map(item => ({
+        items.value = typedData.map((item) => ({
         id: item.id,
         name: item.name,
         completed: item.completed,
@@ -127,11 +129,11 @@
 
     // Delete selected
     const deleteSelected = async () => {
-    const selectedItems = items.value.filter(item => item.completed);
+    const selectedItems = items.value.filter((item) => item.completed);
     if (selectedItems.length === 0) return;
 
     try {
-        const itemIds = selectedItems.map(item => item.id);
+        const itemIds = selectedItems.map((item) => item.id);
         const { error } = await supabase
         .from("shopping_items")
         .delete()
@@ -139,7 +141,7 @@
 
         if (error) throw error;
 
-        items.value = items.value.filter(item => !item.completed);
+        items.value = items.value.filter((item) => !item.completed);
     } catch (error) {
         console.error("Error deleting items:", error);
     }
@@ -163,12 +165,12 @@
 
     // Computed
     const hasSelected = computed(() =>
-    items.value.some(item => item.completed)
+    items.value.some((item) => item.completed)
     );
 
     const suggestions = computed(() => {
     return userItemsHistory.value
-        .filter(item =>
+        .filter((item) =>
         item.name.toLowerCase().includes(newItem.value.toLowerCase())
         )
         .slice(0, 5);
@@ -192,7 +194,9 @@
         </div>
 
         <!-- Input Section -->
-        <div class="mb-8 bg-white/70 backdrop-blur rounded-xl shadow-lg p-4 border border-gray-100">
+        <div
+        class="mb-8 bg-white/70 backdrop-blur rounded-xl shadow-lg p-4 border border-gray-100"
+        >
         <div class="flex items-center gap-2 mb-3">
             <input
             v-model="newItem"
@@ -229,8 +233,9 @@
         <div class="flex justify-between items-center mb-8">
         <button
             @click="deleteSelected"
-            class="bg-red-500 text-white px-5 py-2.5 rounded-lg shadow hover:bg-red-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+            class="bg-red-500 text-white px-5 py-2.5 rounded-lg shadow hover:bg-red-600 transition flex items-center gap-1"
             :disabled="!hasSelected"
+            :aria-disabled="!hasSelected"
         >
             Delete Selected
         </button>
@@ -239,6 +244,7 @@
             @click="clearAll"
             class="bg-gray-700 text-white px-5 py-2.5 rounded-lg shadow hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
             :disabled="items.length === 0"
+            :aria-disabled="items.length === 0"
         >
             Clear All
         </button>
@@ -259,6 +265,7 @@
                 type="checkbox"
                 v-model="item.completed"
                 @change="updateItemCompletion(item)"
+                :aria-checked="item.completed"
                 class="w-5 h-5 text-green-500 rounded focus:ring-green-400 transition"
             />
             <span

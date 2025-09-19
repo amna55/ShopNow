@@ -1,5 +1,18 @@
 <template>
     <div class="max-w-2xl mx-auto py-10 px-6 text-gray-900 bg-white rounded-lg shadow">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <button
+                @click="goBackToDashboard"
+                class="flex items-center text-green-600 hover:text-green-700 transition"
+            >
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to your list
+            </button>
+        </div>
+
         <h1 class="text-2xl font-bold mb-6 text-center">👤 My Profile</h1>
 
         <!-- Success/Error Messages -->
@@ -128,8 +141,10 @@ definePageMeta({
 });
 
 import { ref, onMounted } from "vue";
+import { useRouter } from 'vue-router'
 
 const supabase = useSupabaseClient()
+const router = useRouter()
 const successMessage = ref("")
 const errorMessage = ref("")
 const showPasswordForm = ref(false)
@@ -148,6 +163,11 @@ const passwordForm = ref({
     newPassword: "",
     confirmPassword: "",
 })
+
+// Go back to dashboard
+const goBackToDashboard = () => {
+    router.push('/dashboard')
+}
 
 // Load user data
 const loadUserData = async () => {
@@ -220,13 +240,6 @@ const changePassword = async () => {
     } finally {
         isChangingPassword.value = false
     }
-}
-
-// Clear messages when form is toggled
-const togglePasswordForm = () => {
-    showPasswordForm.value = !showPasswordForm.value
-    errorMessage.value = ""
-    successMessage.value = ""
 }
 
 // Initialize
