@@ -53,14 +53,6 @@
             <img src="/google.svg" alt="Google" class="h-5 w-5" />
             Continue with Google
             </button>
-
-            <button
-            @click="loginWithFacebook"
-            class="w-full flex items-center justify-center gap-2 bg-[#ffffff] text-gray-700 px-3 py-2 rounded shadow hover:bg-gray-200"
-            >
-            <img src="/facebook.svg" alt="Facebook" class="h-5 w-5" />
-            Continue with Facebook
-            </button>
         </div>
 
         <!-- Register link -->
