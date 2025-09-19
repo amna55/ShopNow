@@ -1,5 +1,5 @@
     <template>
-    <div class="flex items-center justify-center h-screen p-4">
+    <div class="flex items-center justify-center min-h-screen p-4 bg-gray-50">
         <div
         class="bg-white rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row overflow-hidden"
         >
@@ -78,8 +78,8 @@
                 @click="showPassword = !showPassword"
                 class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
                 >
-                <span v-if="showPassword"></span>
-                <span v-else></span>
+                <span v-if="showPassword">Hide</span>
+                <span v-else>Show</span>
                 </button>
             </div>
 
@@ -98,8 +98,8 @@
                 @click="showConfirmPassword = !showConfirmPassword"
                 class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
                 >
-                <span v-if="showConfirmPassword"></span>
-                <span v-else></span>
+                <span v-if="showConfirmPassword">Hide</span>
+                <span v-else>Show</span>
                 </button>
             </div>
 
@@ -117,58 +117,81 @@
             </p>
         </div>
 
-        <!-- Social Signup Container -->
+        <!-- Google Signup Container -->
         <div class="flex-1 bg-gray-100 p-8 flex flex-col justify-center items-center">
             <h2 class="text-xl font-bold mb-6 text-gray-800 text-center">Or Sign Up With</h2>
 
             <button
             @click="registerWithGoogle"
-            class="w-full flex items-center justify-center gap-2 bg-white text-gray-700 px-4 py-2 rounded shadow hover:bg-gray-100 mb-4"
+            class="w-full flex items-center justify-center gap-2 bg-white text-gray-700 px-4 py-2 rounded shadow hover:bg-gray-100"
             >
             <img src="/google.svg" alt="Google" class="h-5 w-5" />
             Google
-            </button>
-
-            <button
-            @click="registerWithFacebook"
-            class="w-full flex items-center justify-center gap-2 bg-white text-gray-700 px-4 py-2 rounded shadow hover:bg-gray-100"
-            >
-            <img src="/facebook.svg" alt="Facebook" class="h-5 w-5" />
-            Facebook
             </button>
         </div>
         </div>
     </div>
     </template>
 
-    <script setup>
-    import { ref } from "vue";
+    <script setup lang="ts">
+    import { ref } from "vue"
+    import { useSupabase } from "~/composables/useSupabase"
+    import { useRouter } from "vue-router"
 
-    const firstName = ref("");
-    const surname = ref("");
-    const email = ref("");
-    const country = ref("");
-    const password = ref("");
-    const confirmPassword = ref("");
+    const supabase = useSupabase()
+    const router = useRouter()
 
-    const showPassword = ref(false);
-    const showConfirmPassword = ref(false);
+    const firstName = ref("")
+    const surname = ref("")
+    const email = ref("")
+    const country = ref("")
+    const password = ref("")
+    const confirmPassword = ref("")
 
-    const register = () => {
+    const showPassword = ref(false)
+    const showConfirmPassword = ref(false)
+
+    // Email/password signup
+    const register = async () => {
     if (password.value !== confirmPassword.value) {
-        alert("Passwords do not match!");
-        return;
+        alert("Passwords do not match!")
+        return
     }
-    alert(
-        `Registering ${firstName.value} ${surname.value}, Email: ${email.value}, Country: ${country.value}`
-    );
-    };
 
-    const registerWithGoogle = () => {
-    alert("Google registration clicked!");
-    };
+    try {
+        const { data, error } = await supabase.auth.signUp({
+        email: email.value,
+        password: password.value,
+        options: {
+            data: {
+            firstName: firstName.value,
+            surname: surname.value,
+            country: country.value
+            }
+        }
+        })
 
-    const registerWithFacebook = () => {
-    alert("Facebook registration clicked!");
-    };
+        if (error) throw error
+
+        alert("Account created! Please check your email to confirm your account.")
+        router.push("/login")
+    } catch (err: any) {
+        alert(`Error: ${err.message}`)
+    }
+    }
+
+    // Google OAuth signup
+    const registerWithGoogle = async () => {
+    try {
+        const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+            redirectTo: "https://shop-now-xi.vercel.app/dashboard" // replace with your URL
+        }
+        })
+        if (error) throw error
+    } catch (err: any) {
+        alert(`Google OAuth Error: ${err.message}`)
+    }
+    }
     </script>

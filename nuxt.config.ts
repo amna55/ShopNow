@@ -23,5 +23,11 @@ export default defineNuxtConfig({
     display: 'swap',              // optional, improves font rendering
     prefetch: true,
     preconnect: true,
+  },
+  runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
+    },
   }
 })
