@@ -19,7 +19,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#490e24] bg-opacity-70 text-white py-6 px-8">
+    <footer class=" bg-opacity-70 text-white py-6 px-8">
       <div class="flex flex-col md:flex-row justify-between items-center">
         <p class="text-sm">&copy; 2025 ShopNow. All rights reserved.</p>
         <div class="space-x-4 mt-2 md:mt-0">

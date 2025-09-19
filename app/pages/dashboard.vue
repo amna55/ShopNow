@@ -186,8 +186,8 @@
     <div class="max-w-3xl mx-auto py-12 px-6">
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-800 tracking-tight">
-            🛒 My Shopping List
+        <h1 class="text-4xl font-bold text-white tracking-tight">
+            My Shopping List
         </h1>
         </div>
 
@@ -203,9 +203,9 @@
             />
             <button
             @click="addItem"
-            class="bg-green-500 text-white px-5 py-2.5 rounded-lg shadow hover:bg-green-600 hover:shadow-md transition flex items-center gap-1"
+            class="bg-green-800 text-white px-5 py-2.5 rounded-lg shadow hover:bg-green-600 hover:shadow-md transition flex items-center gap-1"
             >
-            <span>➕</span> Add
+            <span></span> Add
             </button>
         </div>
 
@@ -232,7 +232,7 @@
             class="bg-red-500 text-white px-5 py-2.5 rounded-lg shadow hover:bg-red-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
             :disabled="!hasSelected"
         >
-            🗑️ Delete Selected
+            Delete Selected
         </button>
 
         <button
@@ -240,7 +240,7 @@
             class="bg-gray-700 text-white px-5 py-2.5 rounded-lg shadow hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
             :disabled="items.length === 0"
         >
-            🧹 Clear All
+            Clear All
         </button>
         </div>
 
@@ -263,7 +263,7 @@
             />
             <span
                 :class="{
-                'line-through text-gray-400': item.completed,
+                'line-through text-gray-800': item.completed,
                 'text-gray-800': !item.completed
                 }"
                 class="font-medium"
@@ -279,7 +279,6 @@
         v-if="items.length === 0"
         class="text-center text-gray-600 mt-16 bg-white/70 backdrop-blur rounded-xl p-12 shadow-lg border border-gray-100"
         >
-        <div class="text-6xl mb-4">🛍️</div>
         <p class="text-xl font-semibold mb-2">Your shopping list is empty.</p>
         <p class="text-gray-500">Add some items above to get started!</p>
         </div>
