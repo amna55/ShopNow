@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen flex items-center justify-center p-4 ">
+    <div class="min-h-screen flex items-center justify-center p-4 text-black">
         <div class="bg-white rounded-lg shadow-lg w-full max-w-3xl flex flex-col md:flex-row overflow-hidden">
 
         <!-- Email Signup Form -->
