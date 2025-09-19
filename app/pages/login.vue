@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="flex items-center justify-center min-h-screen p-4 text-black">
         <div class="bg-[#faa675] p-6 rounded-lg shadow-md w-full max-w-sm">
         <h1 class="text-xl font-bold mb-4 text-white">Enter your details</h1>
 
