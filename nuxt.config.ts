@@ -29,5 +29,31 @@ export default defineNuxtConfig({
       supabaseUrl: process.env.SUPABASE_URL,
       supabaseKey: process.env.SUPABASE_KEY,
     },
+  },
+  pwa: {
+  manifest: {
+    name: 'ShopNow - Shopping List',
+    short_name: 'ShopNow',
+    description: 'Your personal shopping list app',
+    theme_color: '#10b981',
+    background_color: '#ffffff',
+    display: 'standalone',
+    start_url: '/',
+    icons: [
+      {
+          src: 'icon-192x192.png',  // Essential for Android
+          sizes: '192x192',
+          type: 'image/png'
+        },
+        {
+          src: 'icon-512x512.png',  // Essential for splash screens
+          sizes: '512x512',
+          type: 'image/png'
+        }
+    ]
+  },
+  workbox: {
+    navigateFallback: '/'
   }
+}
 })
