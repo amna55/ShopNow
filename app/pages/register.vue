@@ -1,5 +1,5 @@
-    <template>
-    <div class="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+<template>
+    <div class="min-h-screen flex items-center justify-center p-4 ">
         <div class="bg-white rounded-lg shadow-lg w-full max-w-3xl flex flex-col md:flex-row overflow-hidden">
 
         <!-- Email Signup Form -->
@@ -12,22 +12,40 @@
             <input v-model="firstName" type="text" placeholder="First Name" required class="input"/>
             <input v-model="surname" type="text" placeholder="Surname" required class="input"/>
             <input v-model="email" type="email" placeholder="Email" required class="input"/>
-            <select v-model="country" required class="input text-black">
+            <select v-model="country" required class="input text-gray-700">
                 <option value="">Select Country</option>
                 <option v-for="c in countries" :key="c" :value="c">{{ c }}</option>
             </select>
             <div class="relative">
-                <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Password" required class="input pr-10"/>
-                <button type="button" @click="showPassword = !showPassword"
-                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
-                {{ showPassword ? "Hide" : "Show" }}
+                <input 
+                    :type="showPassword ? 'text' : 'password'" 
+                    v-model="password" 
+                    placeholder="Password" 
+                    required 
+                    class="input pr-10 w-full"
+                />
+                <button 
+                    type="button" 
+                    @click="showPassword = !showPassword"
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm focus:outline-none"
+                >
+                    {{ showPassword ? "Hide" : "Show" }}
                 </button>
             </div>
             <div class="relative">
-                <input :type="showConfirmPassword ? 'text' : 'password'" v-model="confirmPassword" placeholder="Confirm Password" required class="input pr-10"/>
-                <button type="button" @click="showConfirmPassword = !showConfirmPassword"
-                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
-                {{ showConfirmPassword ? "Hide" : "Show" }}
+                <input 
+                    :type="showConfirmPassword ? 'text' : 'password'" 
+                    v-model="confirmPassword" 
+                    placeholder="Confirm Password" 
+                    required 
+                    class="input pr-10 w-full"
+                />
+                <button 
+                    type="button" 
+                    @click="showConfirmPassword = !showConfirmPassword"
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm focus:outline-none"
+                >
+                    {{ showConfirmPassword ? "Hide" : "Show" }}
                 </button>
             </div>
 
@@ -55,32 +73,32 @@
 
         </div>
     </div>
-    </template>
+</template>
 
-    <script setup lang="ts">
-    import { ref, onMounted } from "vue"
-    import { useRouter } from "vue-router"
-    import type { SupabaseClient } from "@supabase/supabase-js"
-    import { useSupabase } from "~/composables/useSupabase"
+<script setup lang="ts">
+import { ref } from "vue"
+import { useRouter } from "vue-router"
 
-    const firstName = ref("")
-    const surname = ref("")
-    const email = ref("")
-    const country = ref("")
-    const password = ref("")
-    const confirmPassword = ref("")
-    const showPassword = ref(false)
-    const showConfirmPassword = ref(false)
+const firstName = ref("")
+const surname = ref("")
+const email = ref("")
+const country = ref("")
+const password = ref("")
+const confirmPassword = ref("")
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
 
-    const errorMessage = ref("")
-    const successMessage = ref("")
-    const googleError = ref("")
+const errorMessage = ref("")
+const successMessage = ref("")
+const googleError = ref("")
 
-    const router = useRouter()
-    let supabase: SupabaseClient
+const router = useRouter()
 
-    // List of all countries
-    const countries = [
+// Use the official Supabase client from the module
+const supabase = useSupabaseClient()
+
+// List of all countries
+const countries = [
     "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
     "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia",
     "Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia",
@@ -99,14 +117,10 @@
     "Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago",
     "Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan",
     "Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
-    ]
+]
 
-    onMounted(() => {
-    supabase = useSupabase()
-    })
-
-    // Email/password signup
-    const register = async () => {
+// Email/password signup
+const register = async () => {
     errorMessage.value = ""
     successMessage.value = ""
 
@@ -117,80 +131,95 @@
 
     try {
         const { error } = await supabase.auth.signUp({
-        email: email.value,
-        password: password.value,
-        options: {
-            data: { firstName: firstName.value, surname: surname.value, country: country.value }
-        }
+            email: email.value,
+            password: password.value,
+            options: {
+                data: { 
+                    firstName: firstName.value, 
+                    surname: surname.value, 
+                    country: country.value 
+                }
+            }
         })
 
         if (error) throw error
 
         successMessage.value = "Account created! Check your email to confirm."
-        router.push("/login")
+        // Wait a moment before redirecting to show the success message
+        setTimeout(() => {
+            router.push("/login")
+        }, 2000)
     } catch (err: any) {
-        errorMessage.value = err.message
+        errorMessage.value = err.message || "An error occurred during registration"
     }
-    }
+}
 
-    // Google OAuth
-    const registerWithGoogle = async () => {
+// Google OAuth
+const registerWithGoogle = async () => {
     googleError.value = ""
     try {
         const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-            redirectTo: window.location.origin + "/dashboard"
-        }
+            provider: "google",
+            options: {
+                redirectTo: window.location.origin + "/dashboard"
+            }
         })
         if (error) throw error
     } catch (err: any) {
-        googleError.value = err.message
+        googleError.value = err.message || "An error occurred with Google sign-in"
     }
-    }
-    </script>
+}
+</script>
 
-    <style scoped>
-    .input {
+<style scoped>
+.input {
     width: 100%;
     border: 1px solid #ccc;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border-radius: 0.375rem;
     outline: none;
     transition: border 0.2s;
-    }
-    .input:focus {
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+.input:focus {
     border-color: #34d399;
-    }
+    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2);
+}
 
-    .btn {
+.btn {
     width: 100%;
     background-color: #f87171;
     color: white;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border-radius: 0.5rem;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
-    }
-    .btn:hover {
+    border: none;
+    font-size: 1rem;
+}
+.btn:hover {
     background-color: #ef4444;
-    }
+}
 
-    .btn-google {
+.btn-google {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border-radius: 0.5rem;
     background-color: white;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     cursor: pointer;
     transition: background-color 0.2s;
-    }
-    .btn-google:hover {
-    background-color: #f3f4f6;
-    }
-    </style>
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    font-weight: 500;
+}
+.btn-google:hover {
+    background-color: #f9fafb;
+}
+</style>
