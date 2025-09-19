@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-cover bg-center text-white" style="background-image: url('/shop.png');">
+  <div class="min-h-screen flex flex-col bg-cover bg-center text-white" style="background-image: url('/Shop.png');">
     <!-- Navbar -->
     <header class="flex justify-between items-center px-8 py-4">
       <NuxtLink to="/" class="text-2xl cursor-pointer font-bold font-lora flex flex-col">
