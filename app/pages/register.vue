@@ -13,7 +13,7 @@
             <input v-model="surname" type="text" placeholder="Surname" required class="input"/>
             <input v-model="email" type="email" placeholder="Email" required class="input"/>
             <select v-model="country" required class="input text-gray-700">
-                <option value="">Select Country</option>
+            <option value="" disabled class="text-gray-500">Select Country</option>
                 <option v-for="c in countries" :key="c" :value="c">{{ c }}</option>
             </select>
             <div class="relative">
